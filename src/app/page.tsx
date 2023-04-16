@@ -4,7 +4,7 @@ export default async function Page() {
   const logs = await TravelLogs.find().toArray();
   return (
     <>
-      <main className="">
+      <main className="bg-red-500">
         <h1>Hello World!</h1>
         <h2>There are {logs.length} in the Database.</h2>
         {logs.map((log) => (

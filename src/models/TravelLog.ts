@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import db from '@/db';
+import { WithId } from 'mongodb';
 
 export const TravelLog = z.object({
   title: z.string().min(1),
@@ -16,3 +17,4 @@ export const TravelLog = z.object({
 export type TravelLog = z.infer<typeof TravelLog>;
 
 export const TravelLogs = db.collection<TravelLog>('logs');
+export type TravelLogWithId = WithId<TravelLog>; // ბაზის ობიექტი უნდა იყოს mongo driver -მა რომ ჩააინსერტა აიდისთან ერთად იმ აიდით
