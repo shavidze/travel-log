@@ -1,13 +1,12 @@
-import { TravelLog } from '@/models/TravelLog';
+'use client';
+
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as yup from 'yup';
+import { TravelLog } from '@/models/TravelLog/TravelLog';
 
 const TravelLogsForm = () => {
   const {
     register,
-    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<TravelLog>({
@@ -16,21 +15,26 @@ const TravelLogsForm = () => {
   const onSubmit: SubmitHandler<TravelLog> = (data) => console.log(data);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="form-control w-full max-w-xs">
+    <form
+      className="mx-auto max-w-md flex gap-4 flex-col"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="form-control w-full">
         <label className="label">
           <span className="label-text">Title</span>
         </label>
         <input
           type="text"
-          className={`input input-bordered w-full max-w-xs ${
+          className={`input input-bordered w-full ${
             errors.title ? 'input-error' : ''
           } `}
           {...register('title')}
         />
-        {errors.title && <span>{errors.title.message}</span>}
+        {errors.title && (
+          <span className=" text-red-600">{errors.title.message}</span>
+        )}
       </div>
-      <button className="btn btn-success">Create</button>
+      <button className="btn btn-success ">Create</button>
     </form>
   );
 };
