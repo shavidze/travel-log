@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TravelLog, TravelLogProperty } from '@/models/TravelLog/TravelLog';
 import { useRouter } from 'next/navigation';
+import { FC, useState } from 'react';
 
 const travelLogInputs: Record<
   TravelLogProperty,
@@ -36,33 +37,22 @@ const travelLogInputs: Record<
   },
 };
 
-const TravelLogsForm = () => {
+type Props = {
+  onComplete: () => void;
+  onCancel: () => void;
+};
+const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
   const router = useRouter();
   const padDate = (inp: string) => inp.padStart(2, '0');
-
   const transformDate = (date: Date) =>
     `${date.getFullYear()}-${padDate(
       (date.getMonth() + 1).toString()
     )}-${padDate(date.getDay().toString())}`;
   const nowDay = transformDate(new Date());
-  const onSubmit: SubmitHandler<TravelLog> = async (data) => {
-    const response = await fetch('/api/logs', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    const json = await response.json();
-
-    console.log(json);
-    // TODO: refresh list of logs
-    router.push('/');
-    // TODO: handle form submission errors
-  };
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<TravelLog>({
     resolver: zodResolver(TravelLog),
@@ -76,48 +66,103 @@ const TravelLogsForm = () => {
       visitDate: nowDay,
     },
   });
+  const [formError, setFormError] = useState<string>('');
+
+  const onSubmit: SubmitHandler<TravelLog> = async (data) => {
+    try {
+      const response = await fetch('/api/logs', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        // TODO: refresh list of logs
+        router.push('/');
+        reset();
+        onComplete();
+      } else {
+        const json = await response.json();
+        throw new Error(json.message);
+      }
+    } catch (e) {
+      const error = e as Error;
+      setFormError(error.message);
+    }
+
+    // TODO: handle form submission errors
+  };
 
   return (
-    <form
-      className="mx-auto max-w-md flex gap-4 flex-col my-8"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      {Object.entries(travelLogInputs).map(([name, value]) => {
-        const property = name as TravelLogProperty;
-        return (
-          <div key={name} className="form-control w-full">
-            <label className="label">
-              <span className="label-text first-letter:uppercase">
-                {value.label || name}
-              </span>
-            </label>
-            {value.type === 'textarea' ? (
-              <textarea
-                className={`textarea rounded textarea-bordered w-full ${
-                  errors.description ? 'textarea-error' : ''
-                }`}
-                {...register(property)}
-              />
-            ) : (
-              <input
-                type={value.type}
-                step="any"
-                className={`input input-bordered rounded w-full ${
-                  errors[property] ? 'input-error' : ''
-                } `}
-                {...register(property)}
-              />
-            )}
-
-            {errors[property] && (
-              <span className=" text-red-600">{errors[property]?.message}</span>
-            )}
+    <div className="flex flex-col w-full mx-auto max-w-md ">
+      <button onClick={onCancel} className="btn btn-error w-[90px]">
+        Cancel
+      </button>
+      <form
+        className="flex gap-4 flex-col my-4"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {formError && (
+          <div className="alert alert-error shadow-lg">
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current flex-shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>{formError}</span>
+            </div>
           </div>
-        );
-      })}
+        )}
+        {Object.entries(travelLogInputs).map(([name, value]) => {
+          const property = name as TravelLogProperty;
+          return (
+            <div key={name} className="form-control w-full">
+              <label className="label">
+                <span className="label-text first-letter:uppercase">
+                  {value.label || name}
+                </span>
+              </label>
+              {value.type === 'textarea' ? (
+                <textarea
+                  className={`textarea rounded textarea-bordered w-full ${
+                    errors.description ? 'textarea-error' : ''
+                  }`}
+                  {...register(property)}
+                />
+              ) : (
+                <input
+                  type={value.type}
+                  step="any"
+                  className={`input input-bordered rounded w-full ${
+                    errors[property] ? 'input-error' : ''
+                  } `}
+                  {...register(property)}
+                />
+              )}
 
-      <button className="btn btn-success ">Create</button>
-    </form>
+              {errors[property] && (
+                <span className=" text-red-600">
+                  {errors[property]?.message}
+                </span>
+              )}
+            </div>
+          );
+        })}
+
+        <button className="btn btn-success ">Create</button>
+      </form>
+    </div>
   );
 };
 

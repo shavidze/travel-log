@@ -1,6 +1,6 @@
 import { TravelLogs } from '@/models/TravelLog/TravelLogs';
 import TravelLogMap from '@/components/TravelLogMap';
-import Link from 'next/link';
+import TravelLogSideBar from '@/components/TravelLogSidebar';
 
 export default async function Page() {
   const logs = await TravelLogs.find().toArray();
@@ -8,12 +8,7 @@ export default async function Page() {
     <>
       <main className="w-full h-full">
         <TravelLogMap logs={logs} />
-        {/* <TravelLogsForm /> */}
-        <div className="fixed top-2 right-2 z-[999]">
-          <Link href="/add" className="btn btn-info">
-            Add Travel Log
-          </Link>
-        </div>
+        <TravelLogSideBar />
       </main>
     </>
   );

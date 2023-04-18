@@ -26,23 +26,26 @@ type Props = {
 const InitMap: FC<Props> = ({ logs }) => {
   const map = useMap();
   useEffect(() => {
-    map.invalidateSize();
+    map.invalidateSize(); // Checks if the map container size changed and updates the map if so — call it after you've changed the map size dynamically, also animating pan by default
     const bounds = new L.LatLngBounds(
       logs.map((log) => [log.latitude, log.longitude])
     );
-    map.fitBounds(bounds);
+    map.fitBounds(bounds); // დავინახოთ ეს ჩვენი დაპინულები ცენტრში
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
   return null;
 };
 const TravelLogMap: FC<Props> = ({ logs }) => {
   const position = [51.505, -0.09];
+  if (!process.env.NEXT_PUBLIC_MAP_TILE_URL) {
+    throw new Error('Missing MAP ACCESS TOKEN');
+  }
 
   return (
     <MapContainer className="w-full h-full" center={position} zoom={3}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        url={process.env.NEXT_PUBLIC_MAP_TILE_URL}
       />
       <InitMap logs={logs} />
       <>
@@ -52,7 +55,7 @@ const TravelLogMap: FC<Props> = ({ logs }) => {
               <Popup offset={[0, -41]}>
                 <p className="text-lg font-bold">{log.title}</p>
                 <div className="flex justify-center items-center">
-                  <img alt={log.title} src={log.image} className="w-97" />
+                  <img alt={log.title} src={log.image} className="w-[97]" />
                 </div>
                 <p>{log.description}</p>
                 <p className="text-sm italic">

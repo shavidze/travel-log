@@ -4,7 +4,7 @@ const nextConfig = {
     appDir: true,
   },
   env: {
-    MAP_ACCESS_TOKEN: process.env.MAP_ACCESS_TOKEN,
+    NEXT_PUBLIC_MAP_TILE_URL: process.env.NEXT_PUBLIC_MAP_TILE_URL,
   },
 };
 
