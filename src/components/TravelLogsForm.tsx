@@ -36,14 +36,42 @@ const travelLogInputs: Record<
 };
 
 const TravelLogsForm = () => {
+  const padDate = (inp: string) => inp.padStart(2, '0');
+
+  const transformDate = (date: Date) =>
+    `${date.getFullYear()}-${padDate(
+      (date.getMonth() + 1).toString()
+    )}-${padDate(date.getDay().toString())}`;
+  const nowDay = transformDate(new Date());
+  const onSubmit: SubmitHandler<TravelLog> = async (data) => {
+    const response = await fetch('/api/logs', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const json = await response.json();
+    console.log(json);
+    // TODO: refresh list of logs
+    // TODO: handle form submission errors
+  };
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<TravelLog>({
     resolver: zodResolver(TravelLog),
+    defaultValues: {
+      title: '',
+      description: '',
+      rating: 5,
+      latitude: 90,
+      longitude: 180,
+      // @ts-ignore
+      visitDate: nowDay,
+    },
   });
-  const onSubmit: SubmitHandler<TravelLog> = (data) => console.log(data);
 
   return (
     <form
@@ -55,11 +83,11 @@ const TravelLogsForm = () => {
         return (
           <div key={name} className="form-control w-full">
             <label className="label">
-              <span className="label-text">{name}</span>
+              <span className="label-text first-letter:uppercase">{name}</span>
             </label>
             {value.type === 'textarea' ? (
               <textarea
-                className={`textarea textarea-bordered w-full ${
+                className={`textarea rounded textarea-bordered w-full ${
                   errors.description ? 'textarea-error' : ''
                 }`}
                 {...register(property)}
@@ -67,7 +95,8 @@ const TravelLogsForm = () => {
             ) : (
               <input
                 type={value.type}
-                className={`input input-bordered w-full ${
+                step="any"
+                className={`input input-bordered rounded w-full ${
                   errors[property] ? 'input-error' : ''
                 } `}
                 {...register(property)}
