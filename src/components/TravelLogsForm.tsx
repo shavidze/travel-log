@@ -3,6 +3,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TravelLog, TravelLogProperty } from '@/models/TravelLog/TravelLog';
+import { useRouter } from 'next/navigation';
 
 const travelLogInputs: Record<
   TravelLogProperty,
@@ -36,6 +37,7 @@ const travelLogInputs: Record<
 };
 
 const TravelLogsForm = () => {
+  const router = useRouter();
   const padDate = (inp: string) => inp.padStart(2, '0');
 
   const transformDate = (date: Date) =>
@@ -52,8 +54,10 @@ const TravelLogsForm = () => {
       body: JSON.stringify(data),
     });
     const json = await response.json();
+
     console.log(json);
     // TODO: refresh list of logs
+    router.push('/');
     // TODO: handle form submission errors
   };
   const {
@@ -75,7 +79,7 @@ const TravelLogsForm = () => {
 
   return (
     <form
-      className="mx-auto max-w-md flex gap-4 flex-col"
+      className="mx-auto max-w-md flex gap-4 flex-col my-8"
       onSubmit={handleSubmit(onSubmit)}
     >
       {Object.entries(travelLogInputs).map(([name, value]) => {
@@ -83,7 +87,9 @@ const TravelLogsForm = () => {
         return (
           <div key={name} className="form-control w-full">
             <label className="label">
-              <span className="label-text first-letter:uppercase">{name}</span>
+              <span className="label-text first-letter:uppercase">
+                {value.label || name}
+              </span>
             </label>
             {value.type === 'textarea' ? (
               <textarea
