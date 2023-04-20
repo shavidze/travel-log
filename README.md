@@ -24,3 +24,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     * [Leaflet](https://leafletjs.com/)
 * [MongoDB](https://www.mongodb.com/)
     * [mongodb](https://www.npmjs.com/package/mongodb)
+* [Zod](https://zod.dev/)
