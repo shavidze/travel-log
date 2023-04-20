@@ -17,12 +17,21 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 # Tech Stack
 
+## Backend
 * [Next.js 13 Beta](https://beta.nextjs.org/docs)
   * [app directory](https://beta.nextjs.org/docs/routing/fundamentals)
   * [server components](https://beta.nextjs.org/docs/rendering/server-and-client-components)
-* [react-leaflet](https://react-leaflet.js.org/)
-    * [Leaflet](https://leafletjs.com/)
 * [MongoDB](https://www.mongodb.com/)
     * [mongodb](https://www.npmjs.com/package/mongodb)
-* [Zod](https://zod.dev/)
+
+
+## Frontend
+* [react-leaflet](https://react-leaflet.js.org/)
+  * [Leaflet](https://leafletjs.com/)
 * [react-hook-form](https://react-hook-form.com/)
+* [TailwindCSS](https://tailwindcss.com/)
+* [DaisyUI](https://daisyui.com/)
+
+
+## Shared
+* [Zod](https://zod.dev/)
