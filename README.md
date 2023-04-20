@@ -35,3 +35,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Shared
 * [Zod](https://zod.dev/)
+* [Typescript] (https://www.typescriptlang.org/)
