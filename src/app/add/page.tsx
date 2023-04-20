@@ -7,6 +7,9 @@ const Add = () => {
         onComplete={() => {
           console.log('added');
         }}
+        onCancel={() => {
+          console.error('aqs');
+        }}
       />
     </div>
   );
