@@ -25,3 +25,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 * [MongoDB](https://www.mongodb.com/)
     * [mongodb](https://www.npmjs.com/package/mongodb)
 * [Zod](https://zod.dev/)
+* [react-hook-form](https://react-hook-form.com/)
