@@ -38,8 +38,8 @@ const travelLogInputs: Record<
 };
 
 type Props = {
-  onComplete: () => void;
-  onCancel: () => void;
+  onComplete?: () => void;
+  onCancel?: () => void;
 };
 const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
   const router = useRouter();
