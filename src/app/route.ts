@@ -7,7 +7,7 @@ export async function GET() {
   return NextResponse.json(logs);
 }
 
-export async function POST() {
+export async function POST(req: Request) {
   const validatedLog = await TravelLog.parseAsync(req.body);
   const insertResult = await TravelLogs.insertOne(validatedLog);
   return NextResponse.json({

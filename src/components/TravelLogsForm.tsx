@@ -38,12 +38,12 @@ const travelLogInputs: Record<
 };
 
 type Props = {
-  onComplete?: () => void;
-  onCancel?: () => void;
+  onComplete: () => void;
+  onCancel: () => void;
 };
 const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
   const router = useRouter();
-  const padDate = (inp: string) => inp.padStart(2, '0');
+  const padDate = (inp: string) => inp.padStart(2, '0'); // 2 სიგრძის მინდა იყოს, თუ არ იყო წინ ჩაუყაროს 0-ები
   const transformDate = (date: Date) =>
     `${date.getFullYear()}-${padDate(
       (date.getMonth() + 1).toString()
