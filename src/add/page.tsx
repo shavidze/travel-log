@@ -1,4 +1,4 @@
-import TravelLogsForm from '@/app/components/TravelLogsForm';
+import TravelLogsForm from '@/components/TravelLogsForm';
 
 const Add = () => {
   return (

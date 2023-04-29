@@ -11,7 +11,6 @@ const TravelLogMap = dynamic(() => import('@/components/TravelLogMap'), {
 
 export default async function Page() {
   const logs = await TravelLogs.find().toArray();
-  console.log(TravelLogMap);
   return (
     <>
       <main className="w-full h-full">
