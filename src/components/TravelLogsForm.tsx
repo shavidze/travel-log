@@ -44,7 +44,7 @@ type Props = {
 };
 const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
   const router = useRouter();
-  const { state, dispatch } = useContext(MarkerContext);
+  const { markerState, updateMarkerState } = useContext(MarkerContext);
   const padDate = (inp: string) => inp.padStart(2, '0'); // 2 სიგრძის მინდა იყოს, თუ არ იყო წინ ჩაუყაროს 0-ები
   const transformDate = (date: Date) =>
     `${date.getFullYear()}-${padDate(
@@ -64,8 +64,8 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
       title: '',
       description: '',
       rating: 5,
-      latitude: state.currentMarkerLocation?.lat,
-      longitude: state.currentMarkerLocation?.lng,
+      latitude: markerState.currentMarkerLocation?.lat,
+      longitude: markerState.currentMarkerLocation?.lng,
       // @ts-ignore
       visitDate: nowDay,
     },
@@ -73,9 +73,9 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
   const [formError, setFormError] = useState<string>('');
 
   useEffect(() => {
-    setValue('latitude', state.currentMarkerLocation?.lat ?? 90);
-    setValue('longitude', state.currentMarkerLocation?.lng ?? 180);
-  }, [state.currentMarkerLocation, setValue]);
+    setValue('latitude', markerState.currentMarkerLocation?.lat ?? 90);
+    setValue('longitude', markerState.currentMarkerLocation?.lng ?? 180);
+  }, [markerState.currentMarkerLocation, setValue]);
 
   const onSubmit: SubmitHandler<TravelLog> = async (data) => {
     try {
