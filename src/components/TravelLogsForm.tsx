@@ -4,7 +4,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TravelLog, TravelLogProperty } from '@/models/TravelLog/TravelLog';
 import { useRouter } from 'next/navigation';
-import { FC, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
+import MarkerContext from '@/context/Marker/MarkerContext';
 
 const travelLogInputs: Record<
   TravelLogProperty,
@@ -43,6 +44,7 @@ type Props = {
 };
 const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
   const router = useRouter();
+  const { state, dispatch } = useContext(MarkerContext);
   const padDate = (inp: string) => inp.padStart(2, '0'); // 2 სიგრძის მინდა იყოს, თუ არ იყო წინ ჩაუყაროს 0-ები
   const transformDate = (date: Date) =>
     `${date.getFullYear()}-${padDate(
@@ -53,20 +55,27 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<TravelLog>({
     resolver: zodResolver(TravelLog),
+
     defaultValues: {
       title: '',
       description: '',
       rating: 5,
-      latitude: 90,
-      longitude: 180,
+      latitude: state.currentMarkerLocation?.lat,
+      longitude: state.currentMarkerLocation?.lng,
       // @ts-ignore
       visitDate: nowDay,
     },
   });
   const [formError, setFormError] = useState<string>('');
+
+  useEffect(() => {
+    setValue('latitude', state.currentMarkerLocation?.lat ?? 90);
+    setValue('longitude', state.currentMarkerLocation?.lng ?? 180);
+  }, [state.currentMarkerLocation, setValue]);
 
   const onSubmit: SubmitHandler<TravelLog> = async (data) => {
     try {
