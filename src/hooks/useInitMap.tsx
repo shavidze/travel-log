@@ -22,9 +22,6 @@ const InitMap = (
           logs.map((log) => [log.latitude, log.longitude])
         );
         map.fitBounds(bounds);
-      } else {
-        map.setZoom(3);
-        map.setView([34.85480922648911, -41.89881501280613]);
       }
       map.on('click', onMapClick);
     }, 200);
