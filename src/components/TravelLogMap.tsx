@@ -46,6 +46,11 @@ const TravelLogMap: FC<Props> = ({ logs }) => {
       />
       <InitMap />
       <>
+        {travelLogLocation && (
+          <Marker
+            position={[travelLogLocation.lat, travelLogLocation.lng]}
+          ></Marker>
+        )}
         {logs.map((log) => (
           <div key={log._id.toString()}>
             <Marker position={[log.latitude, log.longitude]}>
