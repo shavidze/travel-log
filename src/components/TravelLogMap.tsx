@@ -3,11 +3,11 @@
 'use client';
 
 import { TravelLogWithId } from '@/models/TravelLog/TravelLogs';
-import { FC, useCallback, useContext, useState } from 'react';
+import { FC, useCallback, useContext } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import L, { marker } from 'leaflet';
+import L from 'leaflet';
 
 import useInitMap from '@/hooks/useInitMap';
 import MarkerContext from '@/context/Marker/MarkerContext';
@@ -48,10 +48,10 @@ const TravelLogMap: FC<Props> = ({ logs }) => {
         data: true,
       });
       // update zoom level
-      if (markerState.map) {
-        const zoomLevel = markerState.map.getZoom();
-        markerState.map.flyTo(e.latlng.wrap(), zoomLevel > 5 ? zoomLevel : 5);
-      }
+      // if (markerState.map) {
+      //   const zoomLevel = markerState.map.getZoom();
+      //   markerState.map.flyTo(e.latlng.wrap(), zoomLevel > 5 ? zoomLevel : 5);
+      // }
     },
     [markerState.map, updateMarkerState]
   );
@@ -60,7 +60,13 @@ const TravelLogMap: FC<Props> = ({ logs }) => {
     return null;
   };
   return (
-    <MapContainer className="w-full h-full" center={position} zoom={3}>
+    <MapContainer
+      // worldCopyJump={true}
+      className="w-full h-full"
+      style={{ background: '#242525' }}
+      center={position}
+      // zoom={3}
+    >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url={process.env.NEXT_PUBLIC_MAP_TILE_URL}

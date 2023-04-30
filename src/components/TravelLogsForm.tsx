@@ -6,6 +6,7 @@ import { TravelLog, TravelLogProperty } from '@/models/TravelLog/TravelLog';
 import { useRouter } from 'next/navigation';
 import { FC, useContext, useEffect, useState } from 'react';
 import MarkerContext from '@/context/Marker/MarkerContext';
+import { MarkerActionType } from '@/context/Marker/interfaces';
 
 const travelLogInputs: Record<
   TravelLogProperty,
@@ -79,7 +80,7 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
 
   const onSubmit: SubmitHandler<TravelLog> = async (data) => {
     try {
-      const response = await fetch('/api/logs', {
+      const response = await fetch('/', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -91,6 +92,10 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
         // TODO: refresh list of logs
         router.push('/');
         reset();
+        updateMarkerState({
+          type: MarkerActionType.SET_CURRENT_MARKER_LOCATION,
+          data: null,
+        });
         onComplete();
       } else {
         const json = await response.json();
@@ -106,7 +111,17 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
 
   return (
     <div className="flex flex-col w-full mx-auto max-w-md ">
-      <button onClick={onCancel} className="btn btn-error w-[90px]">
+      <button
+        onClick={() => {
+          updateMarkerState({
+            type: MarkerActionType.SET_CURRENT_MARKER_LOCATION,
+            data: null,
+          });
+          onCancel();
+          reset();
+        }}
+        className="btn btn-error w-[90px]"
+      >
         Cancel
       </button>
       <form
