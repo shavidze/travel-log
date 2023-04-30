@@ -82,7 +82,8 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
       const response = await fetch('/api', {
         method: 'POST',
         headers: {
-          'content-type': 'application/json',
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
         body: JSON.stringify(data),
       });
