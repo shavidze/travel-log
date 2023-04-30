@@ -12,7 +12,6 @@ type Props = {
 const useInitMap: FC<Props> = ({ logs, onMapClick, dispatch }) => {
   const map = useMap();
   useLayoutEffect(() => {
-    console.log('aqaa');
     setTimeout(() => {
       dispatch({
         type: MarkerActionType.SET_MAP,
