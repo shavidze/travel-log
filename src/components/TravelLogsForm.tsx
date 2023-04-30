@@ -79,8 +79,9 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
   }, [markerState.currentMarkerLocation, setValue]);
 
   const onSubmit: SubmitHandler<TravelLog> = async (data) => {
+    console.log('data', data);
     try {
-      const response = await fetch('/', {
+      const response = await fetch('/api', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',

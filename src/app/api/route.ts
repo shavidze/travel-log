@@ -4,8 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const logs = await TravelLogs.find().toArray();
-  console.log('logs - ', logs);
-  return NextResponse.json(logs);
+  return NextResponse.json({ logs });
 }
 
 export async function POST(req: Request) {

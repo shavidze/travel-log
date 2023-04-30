@@ -9,9 +9,9 @@ import 'leaflet/dist/leaflet.css';
 
 import L from 'leaflet';
 
-import useInitMap from '@/hooks/useInitMap';
 import MarkerContext from '@/context/Marker/MarkerContext';
 import { MarkerActionType } from '@/context/Marker/interfaces';
+import InitMap from '@/hooks/useInitMap';
 // @ts-ignore
 const createIcon = (fill = '#56BC58', iconSize = 32) => {
   return L.divIcon({
@@ -37,6 +37,7 @@ const TravelLogMap: FC<Props> = ({ logs }) => {
   }
 
   const { markerState, updateMarkerState } = useContext(MarkerContext);
+  console.log('logs - ', logs);
   const MapClick = useCallback(
     (e: L.LeafletMouseEvent) => {
       updateMarkerState({
@@ -53,12 +54,9 @@ const TravelLogMap: FC<Props> = ({ logs }) => {
       //   markerState.map.flyTo(e.latlng.wrap(), zoomLevel > 5 ? zoomLevel : 5);
       // }
     },
-    [markerState.map, updateMarkerState]
+    [markerState, updateMarkerState]
   );
-  const InitMap = () => {
-    useInitMap(logs, MapClick, updateMarkerState);
-    return null;
-  };
+
   return (
     <MapContainer
       // worldCopyJump={true}
@@ -71,7 +69,7 @@ const TravelLogMap: FC<Props> = ({ logs }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url={process.env.NEXT_PUBLIC_MAP_TILE_URL}
       />
-      <InitMap />
+      <InitMap logs={logs} onMapClick={MapClick} dispatch={updateMarkerState} />
       <>
         {markerState.currentMarkerLocation && (
           <Marker

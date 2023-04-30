@@ -1,16 +1,18 @@
 import { TravelLogWithId } from '@/models/TravelLog/TravelLogs';
-import { useEffect, useLayoutEffect } from 'react';
+import { FC, useEffect, useLayoutEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MarkerActionType, MarkerDispatch } from '@/context/Marker/interfaces';
 
-const InitMap = (
-  logs: TravelLogWithId[],
-  onMapClick: (event: L.LeafletMouseEvent) => void,
-  dispatch: MarkerDispatch
-) => {
+type Props = {
+  logs: TravelLogWithId[];
+  onMapClick: (event: L.LeafletMouseEvent) => void;
+  dispatch: MarkerDispatch;
+};
+const useInitMap: FC<Props> = ({ logs, onMapClick, dispatch }) => {
   const map = useMap();
   useLayoutEffect(() => {
+    console.log('aqaa');
     setTimeout(() => {
       dispatch({
         type: MarkerActionType.SET_MAP,
@@ -27,9 +29,9 @@ const InitMap = (
     }, 200);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, logs, onMapClick, dispatch]);
+  }, [map, logs, dispatch]);
 
   return null;
 };
 
-export default InitMap;
+export default useInitMap;
