@@ -17,12 +17,15 @@ const useInitMap: FC<Props> = ({ logs, onMapClick, dispatch }) => {
         type: MarkerActionType.SET_MAP,
         data: map,
       });
-      map.invalidateSize(); // Checks if the map container size changed and updates the map if so — call it after you've changed the map size dynamically, also animating pan by default
+      map.invalidateSize(true); // Checks if the map container size changed and updates the map if so — call it after you've changed the map size dynamically, also animating pan by default
       if (logs.length) {
         const bounds = new L.LatLngBounds(
           logs.map((log) => [log.latitude, log.longitude])
         );
         map.fitBounds(bounds);
+      } else {
+        map.setZoom(3);
+        map.setView([34.85480922648911, -41.89881501280613]);
       }
       map.on('click', onMapClick);
     }, 200);
