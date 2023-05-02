@@ -41,7 +41,7 @@ export const TravelLogEntry = baseValidation.extend({
             code: z.ZodIssueCode.custom,
             message: 'Invalid date string.',
           });
-          return z.never; // The return value is not used, but we need to return something to satisfy the typing
+          return z.NEVER; // The return value is not used, but we need to return something to satisfy the typing
         }
         return new Date(date).getTime(); // return timestamp
       }
