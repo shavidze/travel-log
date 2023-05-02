@@ -31,13 +31,11 @@ type Props = {
 };
 
 const TravelLogMap: FC<Props> = ({ logs }) => {
-  const position = [51.505, -0.09];
   if (!process.env.NEXT_PUBLIC_MAP_TILE_URL) {
     throw new Error('Missing MAP ACCESS TOKEN');
   }
 
   const { markerState, updateMarkerState } = useContext(MarkerContext);
-  console.log('logs - ', logs);
   const MapClick = useCallback(
     (e: L.LeafletMouseEvent) => {
       updateMarkerState({
@@ -48,11 +46,6 @@ const TravelLogMap: FC<Props> = ({ logs }) => {
         type: MarkerActionType.SET_SIDEBAR_VISIBLE,
         data: true,
       });
-      // update zoom level
-      // if (markerState.map) {
-      //   const zoomLevel = markerState.map.getZoom();
-      //   markerState.map.flyTo(e.latlng.wrap(), zoomLevel > 5 ? zoomLevel : 5);
-      // }
     },
     [markerState, updateMarkerState]
   );

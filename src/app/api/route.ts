@@ -28,7 +28,6 @@ const checkOnIPRequests = async () => {
 export async function GET() {
   await checkOnIPRequests();
   const logs = await TravelLogs.find().toArray();
-  // console.log('mevidaaaaaaa---', logs);
   return NextResponse.json({ logs });
 }
 
