@@ -88,7 +88,7 @@ const TravelLogMap: FC<Props> = ({ logs }) => {
                 </div>
                 <p>{log.description}</p>
                 <p className="text-sm italic">
-                  {new Date(log.visitDate.toString()).toLocaleDateString()}
+                  {new Date(log.visitDate).toLocaleDateString()}
                 </p>
               </Popup>
             </Marker>
