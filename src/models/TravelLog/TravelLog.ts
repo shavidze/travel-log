@@ -15,9 +15,14 @@ export const TravelLog = z.object({
   latitude: z.coerce.number().min(-90).max(90),
   longitude: z.coerce.number().min(-180).max(180),
   visitDate: z.coerce.date(),
+  apiKey: z.string().min(1),
 });
 
 export const TravelLogProperties = TravelLog.keyof().Enum;
 export type TravelLogProperty = keyof typeof TravelLogProperties;
+export type TravelLogProperyWithoutLocation = Exclude<
+  TravelLogProperty,
+  'longitude' | 'latitude'
+>;
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type TravelLog = z.infer<typeof TravelLog>;

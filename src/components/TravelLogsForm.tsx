@@ -13,9 +13,12 @@ const travelLogInputs: Record<
   TravelLogProperty,
   {
     label?: string;
-    type: 'text' | 'url' | 'textarea' | 'number' | 'date';
+    type: 'text' | 'url' | 'textarea' | 'number' | 'date' | 'password';
   }
 > = {
+  apiKey: {
+    type: 'password',
+  },
   title: {
     type: 'text',
   },
@@ -57,7 +60,6 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
     formState: { errors },
   } = useForm<TravelLog>({
     resolver: zodResolver(TravelLog),
-
     defaultValues: {
       title: '',
       description: '',
@@ -66,6 +68,7 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
       longitude: markerState.currentMarkerLocation?.lng,
       // @ts-ignore
       visitDate: nowDay,
+      apiKey: localStorage.getItem('apiKey') ?? '',
     },
   });
   const [formError, setFormError] = useState<string>('');
@@ -76,7 +79,6 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
   }, [markerState.currentMarkerLocation, setValue]);
 
   const onSubmit: SubmitHandler<TravelLog> = async (data) => {
-    console.log('data', data);
     try {
       setFormError('');
       const response = await fetch('/api', {
@@ -89,7 +91,7 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
       });
 
       if (response.ok) {
-        // TODO: refresh list of logs
+        localStorage.setItem('apiKey', data.apiKey);
         router.push('/');
         reset();
         updateMarkerState({
