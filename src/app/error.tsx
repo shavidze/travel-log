@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 'use client';
 
 // Error components must be Client components

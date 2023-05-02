@@ -1,5 +1,5 @@
 import { TravelLogWithId } from '@/models/TravelLog/TravelLogs';
-import { FC, useEffect, useLayoutEffect } from 'react';
+import { FC, useLayoutEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MarkerActionType, MarkerDispatch } from '@/context/Marker/interfaces';
