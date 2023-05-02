@@ -59,10 +59,9 @@ const TravelLogMap: FC<Props> = ({ logs }) => {
 
   return (
     <MapContainer
-      // worldCopyJump={true}
+      worldCopyJump={true}
       className="w-full h-full"
       style={{ background: '#242525' }}
-      center={position}
       // zoom={3}
     >
       <TileLayer

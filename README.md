@@ -1,5 +1,13 @@
 # Full stack application with Next.js 13 Beta
 
+Install dependencies
+```bash
+   npm install
+```
+
+Copy `.env.sample` to `.env.local`
+
+
 ## Getting Started
 
 First, run the development server:
