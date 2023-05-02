@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import CustomError from '@/errors/CustomError';
-import { TravelLog, TravelLogs } from '@/models/TravelLog/TravelLogs';
+import { TravelLogEntry, TravelLogs } from '@/models/TravelLog/TravelLogs';
 // import { ObjectId } from 'mongodb';
 import { NextResponse } from 'next/server';
 import LambdaRateLimiter from 'lambda-rate-limiter';
@@ -41,8 +41,9 @@ export async function POST(req: Request) {
     return new CustomError('Unauthorized', 401);
   }
   delete res.apiKey;
-  const validatedLog = await TravelLog.parseAsync(res);
+  const validatedLog = await TravelLogEntry.parseAsync(res);
   const insertResult = await TravelLogs.insertOne(validatedLog);
+
   return NextResponse.json({
     ...validatedLog,
     _id: insertResult.insertedId,

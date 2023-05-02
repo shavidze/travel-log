@@ -2,7 +2,6 @@
 
 'use client';
 
-import { TravelLogWithId } from '@/models/TravelLog/TravelLogs';
 import { FC, useCallback, useContext } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -12,6 +11,7 @@ import L from 'leaflet';
 import MarkerContext from '@/context/Marker/MarkerContext';
 import { MarkerActionType } from '@/context/Marker/interfaces';
 import InitMap from '@/hooks/useInitMap';
+import { TravelLogEntryWithId } from '@/models/TravelLog/TravelLog';
 // @ts-ignore
 const createIcon = (fill = '#56BC58', iconSize = 32) => {
   return L.divIcon({
@@ -27,7 +27,7 @@ L.Marker.prototype.options.icon = createIcon();
 const currentMarkerIcon = createIcon('#F2BB05', 40);
 
 type Props = {
-  logs: TravelLogWithId[];
+  logs: TravelLogEntryWithId[];
 };
 
 const TravelLogMap: FC<Props> = ({ logs }) => {

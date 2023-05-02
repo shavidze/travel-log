@@ -2,7 +2,11 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TravelLog, TravelLogProperty } from '@/models/TravelLog/TravelLog';
+import {
+  TravelLogProperty,
+  TravelLogProperyWithoutLocation,
+  TravelLogRequest,
+} from '@/models/TravelLog/TravelLog';
 import { useRouter } from 'next/navigation';
 import { FC, useContext, useEffect, useState } from 'react';
 import MarkerContext from '@/context/Marker/MarkerContext';
@@ -10,7 +14,7 @@ import { MarkerActionType } from '@/context/Marker/interfaces';
 import formatDate from 'date-fns/format';
 
 const travelLogInputs: Record<
-  TravelLogProperty,
+  TravelLogProperyWithoutLocation,
   {
     label?: string;
     type: 'text' | 'url' | 'textarea' | 'number' | 'date' | 'password';
@@ -29,12 +33,6 @@ const travelLogInputs: Record<
     type: 'url',
   },
   rating: {
-    type: 'number',
-  },
-  latitude: {
-    type: 'number',
-  },
-  longitude: {
     type: 'number',
   },
   visitDate: {
@@ -58,8 +56,8 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
     reset,
     setValue,
     formState: { errors },
-  } = useForm<TravelLog>({
-    resolver: zodResolver(TravelLog),
+  } = useForm<TravelLogRequest>({
+    resolver: zodResolver(TravelLogRequest),
     defaultValues: {
       title: '',
       description: '',
@@ -78,7 +76,7 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
     setValue('longitude', markerState.currentMarkerLocation?.lng ?? 180);
   }, [markerState.currentMarkerLocation, setValue]);
 
-  const onSubmit: SubmitHandler<TravelLog> = async (data) => {
+  const onSubmit: SubmitHandler<TravelLogRequest> = async (data) => {
     try {
       setFormError('');
       const response = await fetch('/api', {
@@ -88,6 +86,7 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
           Accept: 'application/json',
         },
         body: JSON.stringify(data),
+        next: { revalidate: 60 },
       });
 
       if (response.ok) {

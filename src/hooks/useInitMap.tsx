@@ -1,11 +1,11 @@
-import { TravelLogWithId } from '@/models/TravelLog/TravelLogs';
 import { FC, useLayoutEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MarkerActionType, MarkerDispatch } from '@/context/Marker/interfaces';
+import { TravelLogEntryWithId } from '@/models/TravelLog/TravelLog';
 
 type Props = {
-  logs: TravelLogWithId[];
+  logs: TravelLogEntryWithId[];
   onMapClick: (event: L.LeafletMouseEvent) => void;
   dispatch: MarkerDispatch;
 };
