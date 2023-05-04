@@ -2,9 +2,11 @@
 import CustomError from '@/errors/CustomError';
 import { TravelLogEntry, TravelLogs } from '@/models/TravelLog/TravelLogs';
 // import { ObjectId } from 'mongodb';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import LambdaRateLimiter from 'lambda-rate-limiter';
 import { headers } from 'next/dist/client/components/headers';
+
+export const revalidate = true;
 
 const limiter = LambdaRateLimiter({
   interval: 60000,
@@ -31,19 +33,18 @@ export async function GET() {
   return NextResponse.json({ logs });
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   await checkOnIPRequests();
-  const res = await req.json();
+  const body = await req.json();
   if (!process.env.API_KEY) {
     throw new Error('API_KEY missing in env');
   }
-  if (res.apiKey !== process.env.API_KEY) {
+  if (body.apiKey !== process.env.API_KEY) {
     return new CustomError('Unauthorized', 401);
   }
-  delete res.apiKey;
-  const validatedLog = await TravelLogEntry.parseAsync(res);
+  delete body.apiKey;
+  const validatedLog = await TravelLogEntry.parseAsync(body);
   const insertResult = await TravelLogs.insertOne(validatedLog);
-
   return NextResponse.json({
     ...validatedLog,
     _id: insertResult.insertedId,

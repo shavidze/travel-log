@@ -86,9 +86,6 @@ const TravelLogsForm: FC<Props> = ({ onComplete, onCancel }) => {
           Accept: 'application/json',
         },
         body: JSON.stringify(data),
-        next: {
-          revalidate: 60,
-        },
       });
 
       if (response.ok) {
