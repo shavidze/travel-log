@@ -6,8 +6,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import LambdaRateLimiter from 'lambda-rate-limiter';
 import { headers } from 'next/dist/client/components/headers';
 
-export const revalidate = true;
-
 const limiter = LambdaRateLimiter({
   interval: 60000,
   uniqueTokenPerInterval: 500,
